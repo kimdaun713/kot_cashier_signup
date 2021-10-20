@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
     <gradient
         android:angle="45"
-        android:startColor = "#B5A5EC"
+        android:startColor = "#AEB3F2"
         android:centerColor = "#AEB3F2"
-        android:endColor = "#7884EA"/>
-    <corners android:bottomLeftRadius="30dp"
-        android:bottomRightRadius="30dp"
-        android:topLeftRadius="30dp"
-        android:topRightRadius="30dp"/>
+        android:endColor = "#AEB3F2"
+    />
 
-    <padding android:left="0dip" android:top="0dip" android:right="0dip" android:bottom="0dip" />
+    <corners android:bottomLeftRadius="30dp"
+        android:topLeftRadius="30dp"
+        android:topRightRadius="30dp"
+        android:bottomRightRadius="30dp"
+        />
 </shape>
