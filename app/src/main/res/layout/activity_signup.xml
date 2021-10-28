@@ -54,7 +54,7 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/editTextTextEmailAddress"
+                            android:id="@+id/editTextPhone"
                             android:layout_width="wrap_content"
                             android:layout_height="60dp"
                             android:layout_gravity="center"
@@ -64,13 +64,13 @@
                             android:layout_marginRight="15dp"
                             android:background="#F2F2F2"
                             android:ems="10"
-                            android:hint="번호를 입력하세요."
+                            android:hint="이메일을 입력하세요."
                             android:inputType="textEmailAddress"
                             android:paddingLeft="10dp"
                             android:shadowColor="#FFFFFF" />
 
                         <Button
-                            android:id="@+id/button4"
+                            android:id="@+id/PhoneAuthButton"
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -81,7 +81,7 @@
                     </LinearLayout>
 
                     <EditText
-                        android:id="@+id/editTextTextPassword"
+                        android:id="@+id/editTextAuthNum"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="20dp"
