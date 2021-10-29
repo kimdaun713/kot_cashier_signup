@@ -36,7 +36,7 @@ class RegisterMemberActivity : AppCompatActivity() {
         fbAuth = FirebaseAuth.getInstance() //파이어베이스 인스턴스 생성
         fbFirestore = FirebaseFirestore.getInstance()
         var uInfo = userInfo()
-
+        //이메일칸에 받은 데이터 미리 기록
         if(intent.hasExtra("email")){
             uInfo.userEmail=intent.getStringExtra("email")
             editTextEmail.text=uInfo.userEmail
@@ -59,16 +59,21 @@ class RegisterMemberActivity : AppCompatActivity() {
                 //이메일 비밀번호 활용하여 사용자 정보 저장
                 auth.createUserWithEmailAndPassword(uInfo.userEmail.toString(), uInfo.userPwd.toString())
                     .addOnCompleteListener(this){task->
-                      if(task.isSuccessful){
-                        Log.d(TAG, "createUserWithEmail:success")
-                      }else{
+                      if(!task.isSuccessful){
+                          Toast.makeText(this@RegisterMemberActivity, "중복된 이메일입니다.",Toast.LENGTH_SHORT).show()
+
                           Log.d(TAG, "createUserWithEmail:fail")
+
+                      }else{
+                          Log.d(TAG, "createUserWithEmail:success")
+                          fbFirestore?.collection("users")?.document(uInfo.userEmail.toString())?.set(uInfo)
+                          val intent = Intent(this, ShowFinishSignUpActivity::class.java)
+                          startActivity(intent)
                       }
                     }
-                fbFirestore?.collection("users")?.document(uInfo.userEmail.toString())?.set(uInfo)
-                //?.collection("users")?.document(auth.uid.toString())?.set(uInfo)
-                val intent = Intent(this, ShowFinishSignUpActivity::class.java)
-                startActivity(intent)
+                //create할때 같이 저장해도되겠는데?해서 아래 지움
+               //?.collection("users")?.document(auth.uid.toString())?.set(uInfo)
+
 
 
             }
