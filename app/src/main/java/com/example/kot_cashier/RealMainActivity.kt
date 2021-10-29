@@ -4,6 +4,7 @@ import android.content.Intent
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import com.example.kot_cashier.RetrofitService
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -16,13 +17,24 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_realmain.*
 import kotlinx.android.synthetic.main.activity_registerdata.*
+import retrofit2.Call
+import retrofit2.Callback
+import  com.example.kot_cashier.Model.Orderlist
+import  com.example.kot_cashier.Model.OrderInfo
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class RealMainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0
     private var userEmail: String? = ""
+
     //데이타 베이스 접근위한 참조
     private lateinit var db: FirebaseFirestore
    // private lateinit var databaseRef: DatabaseReference
+    //retrofit
+    private lateinit var retrofit : Retrofit
+    private lateinit var retrofitManager : RetrofitService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +49,34 @@ class RealMainActivity : AppCompatActivity() {
         }
         //databaseRef= Firebase.database.reference
 
+
+        //retrofit
+        val builder:Retrofit.Builder=Retrofit.Builder()
+            .baseUrl("http://210.125.29.233:80")
+            .addConverterFactory(GsonConverterFactory.create())
+
+        val retrofit: Retrofit= builder.build()
+
+        val client: RetrofitService = retrofit.create(RetrofitService::class.java)
+            val call:Call<List<OrderInfo>> = client.getPaymentInfo("ndj_market","getHistoryForAsset","peer0.org1.example.com")
+
+        call.enqueue(object: Callback<List<OrderInfo>>{
+            override fun onFailure(call: Call<List<OrderInfo>>, t: Throwable) {
+                Toast.makeText(this@RealMainActivity, "failed",Toast.LENGTH_LONG).show()
+                Log.d("message","fail")
+            }
+
+            override fun onResponse(
+                call: Call<List<OrderInfo>>,
+                response: Response<List<OrderInfo>>
+
+            ) {
+
+                Toast.makeText(this@RealMainActivity, "success",Toast.LENGTH_LONG).show()
+
+            }
+        })
+
         //데이터 받아오기(유저이메일 도큐먼트 기준, 유저 네임의 내용을 출력)
         val docRef = db.collection("users").document(userEmail.toString())
             docRef.get().addOnSuccessListener { document->
@@ -50,6 +90,8 @@ class RealMainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_realmain)
+
+        //retrofit
 
 
 
@@ -79,4 +121,6 @@ class RealMainActivity : AppCompatActivity() {
             System.exit(0);
         }
     }
+
+
 }
